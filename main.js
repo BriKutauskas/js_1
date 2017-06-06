@@ -97,8 +97,8 @@
 //
 // function checkPass (pw)
 //   {
-//     var reg = new RegExp('^[0-9]+$');
-//     return pw.length >= 6 && (pw.includes("!") || pw.includes('#') || pw.includes('$')) && !pw.includes("password") && (pw(reg)); // FUCK
+//     var reg = new RegExp('[0-9]');
+//     return pw.length >= 6 && (pw.includes("!") || pw.includes('#') || pw.includes('$')) && !pw.includes("password") && (reg.test(pw));
 //   }
 //
 // function credentials (user, pass)
@@ -123,13 +123,36 @@
 // Add all the numbers together
 // The check digit (the last number of the card) is the amount that you would need to add to get a multiple of 10 (Modulo 10)
 
-var cc = "1234567890123456";
+var cc = '1234567890123456';
+var ogCC = cc;
 cc = cc.slice(0, -1);
-for(var i=cc.length-1; i>=0; i--) // reversing
-  {
-    var revIndex = cc[i];
-    for (var j = 0; j <= 15; (j%2=1))
-      {
-        console.log(revIndex[j]); // access reversed cc, then access odd positions in array
-      }
+cc = cc.split('').reverse().join('');
+for(i=0; i<cc.length; i+=2){
+  cc[i] = cc[i] * 2;
+  if(cc[i] > 9){
+    cc[i]= cc[i] - 9;
   }
+}
+function addTotal(total, number){
+  return total + number;
+}
+cc = cc.split('').reduce(addTotal);
+cc= cc % 10;
+console.log(cc);
+
+// function redu(func) {
+//   var total;
+//   for (var i = 0; i < array.length; i++) {
+//     total = func(total, array[i]);
+//   }
+//   return total;
+// };
+
+// var i = 0;
+// do {
+//   if (i % 2 === 1) {
+//     console.log(i + 'is odd');
+//   } else {
+//     console.log(i + 'is even');
+//   }
+// } while (i <= 15);
